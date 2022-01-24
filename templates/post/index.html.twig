@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PostController!{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <h1>Post de "{{ thread.subject|slice(0, 10) }}..."</h1>
+        {% for post in postPagination %}
+            <div class="col-12 my-3">
+                <div class="card ">
+                    <div class="card-header bg-dark text-light">
+                        <div class="d-flex justify-content-between mx-1">
+                            <div class="card-title">
+                                {% if post.user %}
+                                    <p>Message de
+                                        {% if app.user %}
+                                        <a class="text-decoration-none text-success"
+                                           href="{{ path('user_detail') }}">{{ post.user.email }}</a>
+                                        {% else %}
+                                            <a class="text-decoration-none text-success"
+                                               href="{{ path('app_register') }}">{{ post.user.email }}</a>
+                                        {% endif %}
+                                    </p>
+                                {% else %}
+                                    <p>Utilisateur supprimé</p>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <p class="text-muted">Fait le {{ post.createdAt|date }}</p>
+                            </div>
+                            {% if post.user == app.user %}
+                                <div>
+                                    <a href="{{ path('post_edit', {'category': thread.subCategory.category.name , 'subCategory': thread.subCategory.name, 'thread': thread.id, 'post': post.id   }) }}"
+                                       class="text-muted"> <i class="fas fa-edit"></i></a>
+                                    <a type="button" class="text-muted" data-bs-toggle="modal"
+                                       data-bs-target="#deleteModal">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
+
+                                <div class="modal" tabindex="-1" id="deleteModal">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-dark">Voulez-vous vraiment supprimer le post
+                                                    ?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-dark">
+                                                <p>Ce post sera définitivement supprimé, êtes-vous sûr ? </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Non, revenir en arrière
+                                                </button>
+                                                <a href="{{ path('post_delete', {'category': thread.subCategory.category.name , 'subCategory': thread.subCategory.name, 'thread': thread.id, 'post': post.id   }) }}"
+                                                   class="btn btn-danger">Supprimer</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body bg-secondary">
+                        {{ post.content }}
+                    </div>
+                    <div class="card-footer">
+                        <span><a href="{{ path('post_upVote', {'category': thread.subCategory.category.name , 'subCategory': thread.subCategory.name, 'thread': thread.id, 'post': post.id   }) }}"><i class="text-success fas fa-thumbs-up"></i></a> {{ post.upVote }}</span>
+                        <span><a href="{{ path('post_downVote', {'category': thread.subCategory.category.name , 'subCategory': thread.subCategory.name, 'thread': thread.id, 'post': post.id   }) }}"><i class="text-danger fas fa-thumbs-down"></i></a>{{ post.downVote }}</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+    {% if app.user %}
+        <a href="{{ path('post_create', {'category': thread.subCategory.category.name , 'subCategory': thread.subCategory.name, 'thread': thread.id   }) }}"
+           class="btn btn-success">Créer un post</a>
+    {% else %}
+        <a href="{{ path('app_register') }}" class="btn btn-secondary">Connectez-vous pour Ajouter un post</a>
+    {% endif %}
+
+    <div class="d-flex justify-content-center">
+        <div class="pagination">
+            {{ knp_pagination_render(postPagination) }}
+        </div>
+    </div>
+
+{% endblock %}

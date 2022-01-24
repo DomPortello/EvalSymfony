@@ -1,0 +1,51 @@
+.pagination {
+  font-size: 1.1em;
+
+  .pagination {
+    padding: 10px;
+    .page {
+      margin-right: 4px;
+
+      a {
+        text-decoration: none;
+        color: blue;
+      }
+    }
+
+    .current {
+      margin-right: 4px;
+      color: black;
+    }
+
+    .next {
+      margin-right: 4px;
+      a {
+        text-decoration: none;
+        color: blue;
+      }
+    }
+
+    .previous {
+      margin-right: 4px;
+      a {
+        text-decoration: none;
+        color: blue;
+      }
+    }
+
+    .last {
+      a {
+        text-decoration: none;
+        color: blue;
+      }
+    }
+
+    .first {
+      margin-right: 4px;
+      a {
+        text-decoration: none;
+        color: blue;
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {#        <h1>Post de "{{ thread.subject|slice(0, 10) }}..."</h1> #}
+        {% for post in posts %}
+            <div class="col-12 my-3">
+                <div class="card bg-secondary">
+                    <div class="card-title">
+                        {{ post.content }}
+                    </div>
+                    <div>
+                        <a href="{{ path('post_index', {'category': post.thread.subCategory.category.name, 'subCategory': post.thread.subCategory.name, 'thread': post.thread.id}) }}" class="btn btn-dark">Thread du post</a>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+        <div class="d-flex justify-content-center">
+            <div class="pagination">
+                {{ knp_pagination_render(posts) }}
+            </div>
+        </div>
+
+
+    </div>
+{% endblock %}

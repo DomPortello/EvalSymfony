@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+    <h1>
+       Threads de {{ subCategories.category.name }} / {{ subCategories.name}}
+    </h1>
+<div class="my-5">
+    <table class="table">
+        <thead class="table-dark">
+        <tr>
+            <th>
+                Sujet
+            </th>
+            <th>
+                Date de création
+            </th>
+            <th>
+                Nombre de posts
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if subCategories.threads is empty %}
+            <tr>
+                <td colspan="4" class="text-center">
+                    Aucun thread
+                </td>
+            </tr>
+        {% endif %}
+        {% for thread in subCategories.threads %}
+            <tr>
+                <td>
+                    {{ thread.subject }}
+                </td>
+                <td>
+                    {{ thread.createdAt|date }}
+                </td>
+                <td>
+                    {{ thread.posts|length }}
+                </td>
+                <td>
+                    <a href="{{ path('post_index', {'category' : subCategories.category.name, 'subCategory': subCategories.name , 'thread': thread.id }) }}" class="btn btn-outline-dark">Voir les posts</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
